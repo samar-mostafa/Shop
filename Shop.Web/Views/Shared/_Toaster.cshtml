@@ -1,0 +1,22 @@
+﻿
+
+@if(TempData["message"] != null)
+{
+    <script src="/plugins/jquery/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    @if (TempData["message"]!.ToString()!.Contains("Deleted"))
+    {
+        <script type="text/javascript">toastr["warning"]('@TempData["message"]')</script>
+    }
+    else if (TempData["message"]!.ToString()!.Contains("Edited"))
+    {
+        <script type="text/javascript">toastr["info"]('@TempData["message"]')</script>
+    }
+    else if (TempData["message"]!.ToString()!.Contains("Created"))
+    {
+        <script type="text/javascript">toastr["success"]('@TempData["message"]')</script>
+    }
+
+
+}

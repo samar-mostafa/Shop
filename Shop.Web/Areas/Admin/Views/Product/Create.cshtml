@@ -1,0 +1,49 @@
+﻿@model ProductVM
+@{
+    ViewBag.PageTitle = "Product Managment";
+    ViewBag.CardTitle = (Model?.Id > 0 ? "Edit Product" : "Create Product");
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+}
+
+<form method="post" action=@(Model?.Id > 0 ? "Edit" : "Create") enctype="multipart/form-data">
+
+    @if (Model?.Id > 0)
+    {
+        <input hidden asp-for="Id">
+    }
+    <div class="form-group m-2">
+        <label asp-for="Name"></label>
+        <input class="form-control" asp-for="Name" placeholder="Enter name">
+        <span asp-validation-for="Name" class="text-danger"></span>
+
+    </div>
+    <div class="form-group m-2">
+        <label asp-for="Discription"></label>
+        <input class="form-control" asp-for="Discription" placeholder="Descriptiom">
+        <span asp-validation-for="Discription" class="text-danger"></span>
+    </div>
+
+    <div class="form-group m-2">
+        <label asp-for="Price"></label>
+        <input class="form-control" asp-for="Price" placeholder="Descriptiom">
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+    <div class="form-group m-2">
+        <label asp-for="Img"></label>
+        <input class="form-control" asp-for="Img" type="file" >
+     
+    </div>
+    <div class="form-group m-2">
+        <label asp-for="CategoryId"></label>
+        <select class="form-control" asp-for="CategoryId" asp-items="@Model.Categories">
+            <option disabled selected>-- select --</option>
+            </select>
+        <span asp-validation-for="@Model.Categories" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Index" class="btn btn-warning">Back to list</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial">
+}
