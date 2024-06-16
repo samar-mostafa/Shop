@@ -24,6 +24,8 @@ namespace Shop.DataAccess.Repositories
             _dbSet.Add(entity);
         }
 
+       
+
         public IEnumerable<T> GetAll(Expression<Func<T, bool>>? predicate = null, string? includeWord = null)
         {
             IQueryable<T> query = _dbSet;
