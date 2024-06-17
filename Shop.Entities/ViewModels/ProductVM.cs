@@ -20,7 +20,7 @@ namespace Shop.Entities.ViewModels
         [Display(Name ="Category")]
         public int CategoryId { get; set; }
 
-        public string Img { get; set; }
+        public string? Img { get; set; }
         public IEnumerable<SelectListItem> Categories { get; set; }=new List<SelectListItem>();
     }
 }

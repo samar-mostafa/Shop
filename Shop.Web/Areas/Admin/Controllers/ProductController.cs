@@ -24,7 +24,9 @@ namespace Shop.Web.Areas.Admin.Controllers
 
         public IActionResult Index()
         {
-            var products = _unitOfWork.Product.GetAll();
+
+            var products = _unitOfWork.Product.GetAll(includeWord:"Category");
+            var productsView = _mapper.Map< IEnumerable<ProductViewVM>>(products);
             return View(products);
         }
 
@@ -50,15 +52,14 @@ namespace Shop.Web.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                var vm = new ProductVM
-                {
-                    Categories = _unitOfWork.Category.GetAll().Select(c => new SelectListItem
-                    {
-                        Value = c.Id.ToString(),
-                        Text = c.Name,
 
-                    })
-                };
+                product.Categories = _unitOfWork.Category.GetAll().Select(c => new SelectListItem
+                {
+                    Value = c.Id.ToString(),
+                    Text = c.Name,
+
+                });
+               
                 return View(product);
             }
            var entity = _mapper.Map<Product>(product);
