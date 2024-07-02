@@ -2,7 +2,7 @@
 @{
     ViewBag.PageTitle = "Category Managment";
     ViewBag.CardTitle = (Model?.Id > 0 ? "Edit Category" : "Create Category");
-    Layout = "~/Views/Shared/_Dashboard.cshtml";
+
 }
 
 <form method="post" action=@(Model?.Id > 0 ? "Edit" : "Create")>

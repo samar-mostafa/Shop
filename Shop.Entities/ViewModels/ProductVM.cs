@@ -15,11 +15,12 @@ namespace Shop.Entities.ViewModels
         public string Name { get; set; }
         public string Discription { get; set; }
         [Display(Name = "Image")]
-        public IFormFile Img { get; set; }
+        public IFormFile? ImgFile { get; set; }
         public decimal Price { get; set; }
         [Display(Name ="Category")]
         public int CategoryId { get; set; }
 
+        public string? Img { get; set; }
         public IEnumerable<SelectListItem> Categories { get; set; }=new List<SelectListItem>();
     }
 }

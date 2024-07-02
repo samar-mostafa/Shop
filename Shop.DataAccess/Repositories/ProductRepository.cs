@@ -1,4 +1,5 @@
-﻿using Shop.Entities.IRepositories;
+﻿using Microsoft.EntityFrameworkCore;
+using Shop.Entities.IRepositories;
 using Shop.Entities.Models;
 using System;
 using System.Collections.Generic;
@@ -18,9 +19,10 @@ namespace Shop.DataAccess.Repositories
 
         }
 
-        public void Update(Product product)
+        public void Update(Product entity)
         {
-            throw new NotImplementedException();
+            
+            _dbContext.Entry(entity).State = EntityState.Modified;
         }
     }
 }

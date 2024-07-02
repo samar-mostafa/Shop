@@ -1,15 +1,15 @@
-﻿@model IEnumerable<Product>
+﻿@model IEnumerable<ProductViewVM>
 
 
 @{
     ViewBag.PageTitle = "Product Managment";
     ViewBag.CardTitle = "View Products";
-    Layout = "~/Views/Shared/_Dashboard.cshtml";
+
 }
 
 
 <div>
-    <a asp-action="Create" class="btn btn-success">Create</a>
+    <a href="/Admin/Product/create" class="btn btn-success">Create</a>
 </div>
 <table id="Products" class="table table-hover">
     <thead>
@@ -32,8 +32,8 @@
                 <td><img src="/Images/Products/@item.Img" class="img-fluid"/></td>
           @*       <td>@item.Category.Name</td> *@
                 <td>
-                    <a href="Admin/Product/Edit/@item.Id" class="btn btn-warning">Edit</a>
-                    <a href="Admin/Product/Delete/@item.Id" class="btn btn-danger">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id"  class="btn btn-warning">Edit</a>
+                    <a onclick="deleteItem(@item.Id)" class="btn btn-danger">Delete</a>
                 </td>
 
             </tr>
@@ -41,10 +41,44 @@
     </tbody>
 </table>
 
-                @section Scripts{
+@section Scripts {
                     <script>
-                        $(document).ready(function () {
-            let table = new DataTable('#Products');
-                        })
+                        var tab;
+        $(document).ready(function () {
+                            
+                          tab = new DataTable('#Products');
+                        });
+
+        function deleteItem(id) {
+            Swal.fire({
+                title: "Do you want to save the changes?",
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: "Save",
+                denyButtonText: `Don't save`
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+
+                    $.ajax({
+                        url: `/Admin/Product/Delete/${id}`,
+                        method: 'post',
+                        success: function () {
+                            Swal.fire("Saved!", "", "success");
+                            tab.ajax.reload();
+                        },
+                        error: function () {
+                            Swal.fire("Changes are not saved", "", "danger");
+                        }
+                    })
+
+
+                } else if (result.isDenied) {
+                    Swal.fire("Changes are not saved", "", "info");
+                }
+            });
+        }
+            
                     </script>
+                  
                 }

@@ -9,6 +9,7 @@ namespace Shop.Web.Mapping
         public MappingProfile()
         {
             CreateMap<ProductVM,Product>().ReverseMap();
+            CreateMap<Product,ProductViewVM>().ForMember(des=>des.Category,src=>src.MapFrom(s =>s.Category.Name));
         }
     }
 }

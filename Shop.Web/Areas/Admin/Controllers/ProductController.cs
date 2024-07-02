@@ -24,7 +24,9 @@ namespace Shop.Web.Areas.Admin.Controllers
 
         public IActionResult Index()
         {
-            var products = _unitOfWork.Product.GetAll();
+
+            var products = _unitOfWork.Product.GetAll(includeWord:"Category");
+            var productsView = _mapper.Map< IEnumerable<ProductViewVM>>(products);
             return View(products);
         }
 
@@ -50,27 +52,26 @@ namespace Shop.Web.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                var vm = new ProductVM
-                {
-                    Categories = _unitOfWork.Category.GetAll().Select(c => new SelectListItem
-                    {
-                        Value = c.Id.ToString(),
-                        Text = c.Name,
 
-                    })
-                };
+                product.Categories = _unitOfWork.Category.GetAll().Select(c => new SelectListItem
+                {
+                    Value = c.Id.ToString(),
+                    Text = c.Name,
+
+                });
+               
                 return View(product);
             }
            var entity = _mapper.Map<Product>(product);
-            if (product.Img != null)
+            if (product.ImgFile != null)
             {
-                var filename=$"{Guid.NewGuid()}{Path.GetExtension(product.Img.FileName)}" ;
+                var filename=$"{Guid.NewGuid()}{Path.GetExtension(product.ImgFile.FileName)}" ;
                 var path = Path.Combine(_webHostEnvironment.WebRootPath,@"Images\Products\");
-                
+
 
                 using var stream = System.IO.File.Create(path + filename);
                
-                    product.Img.CopyTo(stream);
+                    product.ImgFile.CopyTo(stream);
 
               
 
@@ -92,11 +93,18 @@ namespace Shop.Web.Areas.Admin.Controllers
                 return NotFound();
 
             var Product = _unitOfWork.Product.GetFirstOrDefault(c => c.Id == id);
-            return View(nameof(Create), Product);
+            var productVM = _mapper.Map<ProductVM>(Product);
+            productVM.Categories = _unitOfWork.Category.GetAll().Select(c => new SelectListItem
+            {
+                Value = c.Id.ToString(),
+                Text = c.Name,
+
+            });
+            return View(nameof(Create),productVM);
         }
 
         [HttpPost]
-        public IActionResult Edit(Product product)
+        public IActionResult Edit(ProductVM product)
         {
             if (product == null)
                 return BadRequest();
@@ -105,7 +113,22 @@ namespace Shop.Web.Areas.Admin.Controllers
 
             if (entity is null)
                 return NotFound();
-            _unitOfWork.Product.Update(product);
+            entity = _mapper.Map<Product>(product);
+            var fileName = "";
+            if (product.ImgFile != null)
+            {
+                var oldImgPath = $"{_webHostEnvironment.WebRootPath}\\{entity.Img}";
+                if (System.IO.File.Exists(oldImgPath))
+                    System.IO.File.Delete(oldImgPath);
+
+                fileName = $"{Guid.NewGuid()}{Path.GetExtension(product.ImgFile.FileName)}";
+                var path = Path.Combine(_webHostEnvironment.WebRootPath, @"Images\Products\");
+                using var stream = System.IO.File.Create(path + fileName);
+                product.ImgFile.CopyTo(stream);
+                entity.Img = @"/Images/Products" + fileName;
+            }
+      
+            _unitOfWork.Product.Update(entity);
 
             _unitOfWork.Complete();
             TempData["message"] = "Product Edited Successfully!";
