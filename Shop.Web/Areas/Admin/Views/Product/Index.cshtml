@@ -9,7 +9,7 @@
 
 
 <div>
-    <a href="Admin/Product/create" class="btn btn-success">Create</a>
+    <a asp-action="Create" class="btn btn-success">Create</a>
 </div>
 <table id="Products" class="table table-hover">
     <thead>
@@ -43,7 +43,7 @@
 
                 @section Scripts{
                     <script>
-                        document.ready(function () {
+                        $(document).ready(function () {
             let table = new DataTable('#Products');
                         })
                     </script>
