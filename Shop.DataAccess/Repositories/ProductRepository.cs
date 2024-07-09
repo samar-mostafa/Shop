@@ -11,8 +11,8 @@ namespace Shop.DataAccess.Repositories
 {
     internal class ProductRepository:Repository<Product>,IProductRepository
     {
-        private readonly ApplicatioDbContext _dbContext;
-        public ProductRepository(ApplicatioDbContext dbContext):base(dbContext)
+        private readonly AppDbContext _dbContext;
+        public ProductRepository(AppDbContext dbContext):base(dbContext)
         {
 
             _dbContext = dbContext;

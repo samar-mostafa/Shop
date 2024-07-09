@@ -11,7 +11,7 @@ using Shop.DataAccess;
 
 namespace Shop.Web.Migrations
 {
-    [DbContext(typeof(ApplicatioDbContext))]
+    [DbContext(typeof(AppDbContext))]
     [Migration("20240605124232_AddProductTable")]
     partial class AddProductTable
     {
