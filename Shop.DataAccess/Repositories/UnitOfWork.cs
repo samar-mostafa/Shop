@@ -9,11 +9,11 @@ namespace Shop.DataAccess.Repositories
 {
     public class UnitOfWork : IUnitOfWork
     {
-        public ApplicatioDbContext _dbContext { get; set; }
+        public AppDbContext _dbContext { get; set; }
         public ICategoryRepository Category { get; private set; }
         public IProductRepository Product { get; set; }
 
-        public UnitOfWork(ApplicatioDbContext dbContext)
+        public UnitOfWork(AppDbContext dbContext)
         {
             _dbContext = dbContext;
             Category=new CategoryRepository(dbContext);

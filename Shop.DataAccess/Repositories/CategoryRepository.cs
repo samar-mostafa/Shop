@@ -10,8 +10,8 @@ namespace Shop.DataAccess.Repositories
 {
     public class CategoryRepository:Repository<Category>,ICategoryRepository
     {
-        public ApplicatioDbContext _dbContext { get; set; }
-        public CategoryRepository(ApplicatioDbContext dbContext):base(dbContext) 
+        public AppDbContext _dbContext { get; set; }
+        public CategoryRepository(AppDbContext dbContext):base(dbContext) 
         {
 
             _dbContext = dbContext;
