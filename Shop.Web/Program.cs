@@ -1,17 +1,22 @@
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Shop.DataAccess;
 using Shop.DataAccess.Repositories;
 using Shop.Entities.IRepositories;
-using Shop.Web.Mapping;
+
 using System.Reflection;
+using Microsoft.AspNetCore.Identity;
+using Shop.Web.Mapping;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
+//builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<AppDbContext>(o => o.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<AppDbContext>();
 
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
 builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(MappingProfile)));

@@ -27,7 +27,7 @@ namespace Shop.Web.Areas.Admin.Controllers
 
             var products = _unitOfWork.Product.GetAll(includeWord:"Category");
             var productsView = _mapper.Map< IEnumerable<ProductViewVM>>(products);
-            return View(products);
+            return View(productsView);
         }
 
         [HttpGet]
@@ -62,7 +62,7 @@ namespace Shop.Web.Areas.Admin.Controllers
                
                 return View(product);
             }
-           var entity = _mapper.Map<Product>(product);
+          var entity = _mapper.Map<Product>(product);
             if (product.ImgFile != null)
             {
                 var filename=$"{Guid.NewGuid()}{Path.GetExtension(product.ImgFile.FileName)}" ;
@@ -73,7 +73,7 @@ namespace Shop.Web.Areas.Admin.Controllers
                
                     product.ImgFile.CopyTo(stream);
 
-              
+
 
 
                 entity.Img = @"Images\Products\" + filename;
@@ -109,7 +109,7 @@ namespace Shop.Web.Areas.Admin.Controllers
             if (product == null)
                 return BadRequest();
 
-            var entity = _unitOfWork.Product.GetFirstOrDefault(c => c.Id == product.Id);
+            var entity = _unitOfWork.Product.GetFirstOrDefaultAsNotTracking(c => c.Id == product.Id);
 
             if (entity is null)
                 return NotFound();
@@ -128,7 +128,7 @@ namespace Shop.Web.Areas.Admin.Controllers
                 entity.Img = @"/Images/Products" + fileName;
             }
       
-            _unitOfWork.Product.Update(entity);
+           _unitOfWork.Product.Update(entity);
 
             _unitOfWork.Complete();
             TempData["message"] = "Product Edited Successfully!";

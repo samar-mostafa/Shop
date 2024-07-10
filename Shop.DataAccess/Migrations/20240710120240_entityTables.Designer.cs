@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shop.DataAccess;
 
@@ -11,9 +12,11 @@ using Shop.DataAccess;
 namespace Shop.Web.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class ApplicatioDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240710120240_entityTables")]
+    partial class entityTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

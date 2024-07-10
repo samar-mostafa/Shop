@@ -10,10 +10,12 @@ namespace Shop.Entities.IRepositories
     public interface IRepository<T> where T : class
     {
         IEnumerable<T> GetAll(Expression<Func<T,bool>>? predicate=null, string? includeWord = null);
+		IEnumerable<T> GetAllAsNotTracking(Expression<Func<T, bool>>? predicate = null, string? includeWord = null);
 
-        T GetFirstOrDefault(Expression<Func<T,bool>>? predicate=null, string? includeWord=null);
+		T GetFirstOrDefault(Expression<Func<T,bool>>? predicate=null, string? includeWord=null);
+		T GetFirstOrDefaultAsNotTracking(Expression<Func<T, bool>>? predicate = null, string? includeWord = null);
 
-        void Add(T entity);
+		void Add(T entity);
 
         void Remove(T entity);
 

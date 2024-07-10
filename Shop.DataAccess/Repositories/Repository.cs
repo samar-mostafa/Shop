@@ -24,9 +24,23 @@ namespace Shop.DataAccess.Repositories
             _dbSet.Add(entity);
         }
 
-       
+		public IEnumerable<T> GetAllAsNotTracking(Expression<Func<T, bool>>? predicate = null, string? includeWord = null)
+		{
+			IQueryable<T> query = _dbSet;
+			if (predicate != null)
+				query = query.Where(predicate);
+			if (includeWord != null)
+			{
+				foreach (var word in includeWord.Split(",", StringSplitOptions.RemoveEmptyEntries))
+				{
+					query = query.Include(word);
+				}
+			}
 
-        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? predicate = null, string? includeWord = null)
+			return query.AsNoTracking().ToList();
+		}
+
+		public IEnumerable<T> GetAll(Expression<Func<T, bool>>? predicate = null, string? includeWord = null)
         {
             IQueryable<T> query = _dbSet;
             if(predicate != null)
@@ -48,7 +62,14 @@ namespace Shop.DataAccess.Repositories
                 return query.FirstOrDefault();    
         }
 
-        public void Remove(T entity)
+
+		public T GetFirstOrDefaultAsNotTracking(Expression<Func<T, bool>>? predicate = null, string? includeWord = null)
+		{
+			var query = GetAllAsNotTracking(predicate, includeWord);
+			return query.FirstOrDefault();
+		}
+
+		public void Remove(T entity)
         {
             _dbSet.Remove(entity);
         }
